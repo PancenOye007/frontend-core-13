@@ -8,7 +8,7 @@
         id: "ads_ghost_v3",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
-        profileImageURL: "https://i.imgur.com/your-thumbnail.jpg", 
+        profileImageURL: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEg7ITjaqo8ezP5dKwWLjjaLlUclxvCqAsFT1cPFiFkBOXfFpb6K5TIJp6MBjYD-wR4lgYx7KQVQ_WnT53QBNmE00xjzjN_pUXxTrhywox6fV5NRxjY3wscJu8E_Ixzyg9djf_M95JUQiSm98z7eGTcWpiMIThb5K5VWrSKueeo_2wSd-fRwAWGkSz9798L9/w945-h600-p-k-no-nu/unnamed.png", 
         directLinks: [
             "https://www.effectivegatecpm.com/s15nzb96e?key=9cc6829d33a9e899d03bb9a04d01a9b0",
 			"https://www.effectivegatecpm.com/ra4reyrd9u?key=10a935ece102d81a81065359b1c7edac",
