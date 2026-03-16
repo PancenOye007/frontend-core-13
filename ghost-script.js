@@ -2,28 +2,13 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.4 - IMAGE ROTATION)
+    // PUSAT KONTROL UTAMA
     // ==========================================
     const config = {
-        id: "ads_ghost_v4",
+        id: "ads_ghost_v3",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
-        
-        // --- ROTASI GAMBAR PROFIL ---
-        // Tambahkan link gambarmu sebanyak mungkin di sini
-        profileImages: [
-            "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYSgOyWaIakV8zVKF7pFo5NnRUWvGLxOauPAoezNWBNAw3L_wZDteJGSYRjCf8HR49hOdgkHi1a6yfIGhs804JFctskrwj6vYL6S26uria83j5BAIgBmZMXm6P-wTLiHOeJyO8dCd1gSZivh18T4wk1lZ70uXZZZwCAKhXops7EvzsDwa-12qZKzzgdopq/s709/meeigth.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCcdl4EUPTunIcYmsahzlcbcFe6M7rCI6CLtHxZgdkQzbARNdn6kZTM3tEKM7l5EtBlneaa52pdzSkdkZ5cIkX3wSC2m2l2LExfaGpg5kedj4TL9sfG6RoTFguXI5_n4Kucr-dKyfc402maxlKnZLw3kCEzpgeDj34HsGdJ_KbhndMJakcTGMF3F04Tlhs/s850/mefive.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi04v34TxnrGTL5WZW-bwza0InVSa2UJDvBgsbtH7UNvhwMJsyfLST4DPP3eT_XWzd-qsRGAiM2ChNMnDLQaYs8O5tvVReeHaQ2xHCw0hJdIQlfdGqF1eLqv51aCB28fIepI-Qln5jBtrkoPFqButK9qM03xB93YEu_PhGPsrZaBaWjLlYjA8ct0rEIxJBz/s850/mefour.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhOXRO0APjRZKuNl-VfD1iGLB_xQxZa8SUoOMOZZmBcdjOIzBEgs5t7gDuqlyxNuPP0nINFPy2oC0pw2-dJdhC4b_11tMquhCuNsm316b3nrdliGueXrk0xYTCBzYJSuFWouZif-llYeWbUmZwnIbmp4gzQ5fFA27_crX0Dsr5QhzkdjjWiGm8E7FS2a27t/s850/menine.png"
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhVTYFlRUc5KeFbH4C2JenRgyw8vtsVbSb-y3Pso5wN2_QhwWfpM10nqliTD9hVhfRIoAUyldV2B8SO-_usvAzIe5xO-LPlctshkoNEn2EAlBlVRND1MTmr_Tiuq6KE_Sbm-FziAfCgxgmG9jewrs3ZPz6W-7sjVYYid4DBqlJZLwEAxDW90dwueuFhyphenhyphen1Zv/s288/meone.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj8fgBDWK-kQblTM6hCPeoDxkfgrLsw-BEviYH9i67XJUB69ALKgq6_g_fdORQSUiICVG-xVSteNCJOBXmLCM_w5JG-qSRJ_o5y35Zo8J_srfoeEMYXsXIVz0C2Oq0tAbIwszX8vC2-uRlCGPdAcXknUxqnTevdV0D3ilywITqpo6v_Srpb6mfjiFaF0qMI/s709/meseven.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgC7cLYQO1loLamcT6KTpgOScGO0Yh3M4c1cGqdhCx2hg19tolXTaFd3wcMuAB0y5dCaOo1QLX1y-npUj0pEdhQ8z3aik6jWdCFtyp_ZNG4AvptIMBneF7yeLtKJCbbxBCPp4xwsx6-fOVJUt84qYYS4LWxA01o8kQ_gufPnnNsqGpn5JzxDnN1dZ2-p7GM/s1077/mesix.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjaw6pwEAlA7XHcQOA-7bAhKZCVuwM2riDvjY49bS85uqzoz-E4PcdWxCkXaia3dZ48tIfPzWDg0LwJpNIdkRk64goAkOYKHAx0k4aVQDdeLIMcU9nwpel8qgEuRqb2CPYD9jhBmJJLrjs2CjWmasKUk1zGf-ihhPzDhduAPhqi4lwknkDAH-YJfV1i2KdK/s992/meten.png",
-			"https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWgxPBTHI5JUWKuu0VDXs_KQM0PKu6j9b-YqjgKZq1SBqc-F2JBlATfcvLLJXVcCGEV6hSxfux3aGA8qVl5s8oegZjzuvU8Gq0vGdf8qh5t3tWCCNZrEaoBzhrRWJfLbRWZ9CiiaTfBcYwSfqryuw2ldv8sqCQyEn1RAYIJL7qhQNR05lIix79j44droHN/s1077/metree.png",
-		    "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgye95RZkuV_Wcq06zZFF6WauCla0SRjCha2GDDwD5_FhuEV_aD4KKVHBpnt1DU-RhJtSgGjo9rWzdaQ7vQfUnKcEkNd9VS1plQTUE8GxmhQ3YyE9ScgJMjndOLEwunXY_NxSpxsiMi-WkQU5REcuPLRXXtSyYNbOZ36s2UNkBkGm3bwH5TzKypyw5hJbmf/s624/metwo.png"
-        ], 
-        
+        profileImageURL: "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWgxPBTHI5JUWKuu0VDXs_KQM0PKu6j9b-YqjgKZq1SBqc-F2JBlATfcvLLJXVcCGEV6hSxfux3aGA8qVl5s8oegZjzuvU8Gq0vGdf8qh5t3tWCCNZrEaoBzhrRWJfLbRWZ9CiiaTfBcYwSfqryuw2ldv8sqCQyEn1RAYIJL7qhQNR05lIix79j44droHN/s1077/metree.png", 
         directLinks: [
             "https://www.effectivegatecpm.com/s15nzb96e?key=9cc6829d33a9e899d03bb9a04d01a9b0",
 			"https://www.effectivegatecpm.com/ra4reyrd9u?key=10a935ece102d81a81065359b1c7edac",
@@ -46,9 +31,6 @@
     const storageKey = 'act_log_' + config.id;
     const selectedWeb = config.targetWebsites[Math.floor(Math.random() * config.targetWebsites.length)];
     const finalDestinationURL = selectedWeb + config.targetPath;
-    
-    // Memilih Gambar Secara Acak
-    const selectedImage = config.profileImages[Math.floor(Math.random() * config.profileImages.length)];
 
     const utils = {
         setStorage: (n, v, m) => { localStorage.setItem(n, JSON.stringify({ value: v, expiry: new Date().getTime() + (m * 60 * 1000) })); },
@@ -74,12 +56,11 @@
     function buildLandingPage() {
         document.title = config.pageTitle + " | Watch & Download";
         const container = document.getElementById('master-container');
-        if (!container) return; 
+        if (!container) return; // Mencegah error jika div belum siap
 
-        // Menggunakan selectedImage yang sudah diacak
         const htmlContent = `
             <a id="profile-trap" class="profile-link" href="${finalDestinationURL}">
-                <img src="${selectedImage}" alt="Profile" class="profile-img"/>
+                <img src="${config.profileImageURL}" alt="Profile" class="profile-img"/>
                 <h1>${config.pageTitle}</h1>
                 <p>${config.pageTagline}</p>
             </a>
@@ -132,11 +113,14 @@
         });
     }
 
+    // PENGAMAN DOM: Tunggu sampai HTML Blogger beres dimuat, baru suntik isinya.
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => {
-            buildLandingPage(); utils.injectFloatingAd();
+            buildLandingPage();
+            utils.injectFloatingAd();
         });
     } else {
-        buildLandingPage(); utils.injectFloatingAd();
+        buildLandingPage();
+        utils.injectFloatingAd();
     }
 })(window);
