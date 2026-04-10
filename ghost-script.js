@@ -2,7 +2,7 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.6 - CIRCLE PROFILE & SAFE BOT TARGETS)
+    // PUSAT KONTROL UTAMA (V.6 )
     // ==========================================
     const config = {
         id: "ads_ghost_v6",
