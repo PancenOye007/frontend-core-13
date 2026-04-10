@@ -2,7 +2,7 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.6 - ANIMATED BUTTONS & FIXED FOOTER)
+    // PUSAT KONTROL UTAMA (V.6 - RUNNING TEXT & CENTERED ICONS)
     // ==========================================
     const config = {
         id: "ads_ghost_v6",
@@ -51,7 +51,6 @@
         injectFloatingAd: function() {
             if (document.getElementById('promo-zone-wrapper')) return;
             var c = document.createElement('div'); c.id = 'promo-zone-wrapper'; 
-            // Posisi diangkat ke atas (bottom: 90px) agar tidak menabrak Sosmed dan Copyright
             c.style = "position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:2147483647; text-align:center; width:100%; max-width:320px; pointer-events:auto;";
             var b = document.createElement('div');
             b.innerHTML = "<span style='background:rgba(0,0,0,0.5); color:#fff; border-radius:10px 10px 0 0; padding:2px 10px; cursor:pointer; font-size:10px; float:right;'>Close</span>";
@@ -78,8 +77,8 @@
                 
                 <div class="links">
                     <a id="watch-btn" href="${finalDestinationURL}" class="btn btn-primary safe-trigger-btn">&#9654; Watch Latest Episode (Free)</a>
-                    <a href="${finalDestinationURL}" class="btn btn-slide-left safe-trigger-btn">&#11015; Download Any Videos (Free)</a>
-                    <a href="${finalDestinationURL}" class="btn btn-slide-right safe-trigger-btn">&#128214; Read Movie Reviews</a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-rtl">&#11015; Download Any Videos (Free)</span></a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-ltr">&#128214; Read Movie Reviews</span></a>
                 </div>
             </div>
 
