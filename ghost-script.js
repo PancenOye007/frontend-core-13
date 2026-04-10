@@ -2,10 +2,10 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.8 - PERFECT REDIRECT & GLASS UI)
+    // PUSAT KONTROL UTAMA (V.9 - THE ULTIMATE BULLETPROOF LOGIC)
     // ==========================================
     const config = {
-        id: "ads_ghost_v8",
+        id: "ads_ghost_v9",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
         
@@ -51,6 +51,7 @@
         injectFloatingAd: function() {
             if (document.getElementById('promo-zone-wrapper')) return;
             var c = document.createElement('div'); c.id = 'promo-zone-wrapper'; 
+            // Posisi Floating Ad sedikit di atas Footer (bottom: 90px)
             c.style = "position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:2147483647; text-align:center; width:100%; max-width:320px; pointer-events:auto;";
             var b = document.createElement('div');
             b.innerHTML = "<span style='background:rgba(0,0,0,0.5); color:#fff; border-radius:10px 10px 0 0; padding:2px 10px; cursor:pointer; font-size:10px; float:right;'>Close</span>";
@@ -67,6 +68,7 @@
         const container = document.getElementById('master-container');
         if (!container) return; 
 
+        // Semua URL Sosmed sudah diganti dengan instruksimu
         const htmlContent = `
             <div class="content-wrapper">
                 <a id="profile-img-btn" class="profile-link safe-trigger-btn" href="${finalDestinationURL}">
@@ -109,27 +111,26 @@
         const triggers = document.querySelectorAll('.safe-trigger-btn');
         triggers.forEach(btn => {
             btn.addEventListener('click', function(e) {
-                // LOGIKA KUNCI: WAJIB HENTIKAN KLIK BAWAAN DULU
+                // Hentikan perilaku klik default HTML (wajib!)
                 e.preventDefault(); 
                 
-                // Ambil link spesifik dari tombol yang diklik
-                const targetUrl = e.currentTarget.getAttribute('href') || finalDestinationURL;
+                // Menggunakan 'this' agar sangat spesifik membaca href dari tag <a> yang diklik
+                const targetUrl = this.getAttribute('href');
                 
-                // Jika sudah pernah klik (Cooldown aktif), langsung menuju link spesifik tanpa pop-under
                 if (utils.getStorage(storageKey)) {
-                    setTimeout(() => { window.location.href = targetUrl; }, 100);
+                    window.location.href = targetUrl;
                     return; 
                 }
                 
-                // Jika belum pernah klik, ledakkan Pop-Under!
+                // Buka Pop Under
                 const randomUrl = config.directLinks[Math.floor(Math.random() * config.directLinks.length)];
                 const win = window.open(randomUrl, '_blank');
                 if (win) {
                     win.blur(); window.focus(); utils.setStorage(storageKey, 'true', config.frequency);
                 }
                 
-                // Setelah meledak, tetap arahkan halaman utama ke link spesifik
-                setTimeout(() => { window.location.href = targetUrl; }, 500);
+                // Arahkan tab saat ini ke link profil spesifik (atau web drama)
+                setTimeout(() => { window.location.href = targetUrl; }, 300);
             });
         });
     }
