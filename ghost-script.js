@@ -109,12 +109,12 @@
 
             const shield = document.createElement('div');
             shield.id = "vignette-overlay";
-            shield.style = "position:fixed; top:5; left:10; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
+            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
             
             // Text Rayuan Dinamis ditambahkan di atas Kotak Iklan
             const textTrap = document.createElement('h2');
             textTrap.innerHTML = selectedPhrase; // <--- SUNTIKAN KATA-KATA RAYUAN DI SINI
-            textTrap.style = "color:#ffffff; font-family:'Inter', sans-serif; font-size:1.5rem; text-align:center; margin-bottom:20px; padding: 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index:10; pointer-events:none;";
+            textTrap.style = "color:#ffffff; font-family:'Inter', sans-serif; font-size:1.5rem; text-align:center; margin-bottom:30px; padding: 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index:10; pointer-events:none;";
             
             const box = document.createElement('div');
             box.style = "position:relative; width:300px; height:250px; background:#fff; border-radius:10px; box-shadow:0 15px 35px rgba(0,0,0,0.8); pointer-events:none;"; 
