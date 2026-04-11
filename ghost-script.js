@@ -79,8 +79,8 @@
                 
                 <div class="links">
                     <a id="watch-btn" href="${finalDestinationURL}" class="btn btn-primary safe-trigger-btn">&#9654; Watch Latest Episode (Free)</a>
-                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-rtl">&#11015; Download Any Videos (Free)</span></a>
-                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-ltr">&#128214; Read Movie Reviews</span></a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-rtl">&#11015; Download Any Videos (Free)  -  Download Any Videos (Free)</span></a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-ltr">&#128214; Read Movie Reviews  -  Read Movie Reviews</span></a>
                 </div>
             </div>
 
