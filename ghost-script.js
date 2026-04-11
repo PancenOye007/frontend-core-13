@@ -114,14 +114,14 @@
             // Text Rayuan Dinamis ditambahkan di atas Kotak Iklan
             const textTrap = document.createElement('h2');
             textTrap.innerHTML = selectedPhrase; // <--- SUNTIKAN KATA-KATA RAYUAN DI SINI
-            textTrap.style = "color:#ffffff; font-family:'Inter', sans-serif; font-size:1.5rem; text-align:center; margin-bottom:35px; padding: 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index:10; pointer-events:none;";
+            textTrap.style = "color:#ffffff; font-family:'Inter', sans-serif; font-size:1.5rem; text-align:center; margin-bottom:40px; padding: 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index:10; pointer-events:none;";
             
             const box = document.createElement('div');
             box.style = "position:relative; width:300px; height:250px; background:#fff; border-radius:10px; box-shadow:0 15px 35px rgba(0,0,0,0.8); pointer-events:none;"; 
 
             const profPic = document.createElement('img');
             profPic.src = selectedImage; // <--- FOTO YANG COCOK DENGAN RAYUAN
-            profPic.style = "position:absolute; top:-35px; left:-35px; width:80px; height:75px; border-radius:50%; border:3px solid #fff; box-shadow:0 5px 15px rgba(0,0,0,0.5); animation:pulseVignette 1.5s infinite; z-index:10;";
+            profPic.style = "position:absolute; top:-35px; left:-35px; width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 5px 15px rgba(0,0,0,0.5); animation:pulseVignette 1.5s infinite; z-index:10;";
 
             const closeBtn = document.createElement('div');
             closeBtn.innerHTML = "&#10006;";
