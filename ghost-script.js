@@ -46,7 +46,7 @@
             "https://www.effectivegatecpm.com/t87gfc3yhi?key=2164efa91dc1c5bda338aef55de7e272",
             "https://www.profitablecpmratenetwork.com/dcy7c3jpv?key=69b42ceba8a121536e80e232dcaaaf61"
         ],
-        frequency: 120, // Cooldown 120 menit (2 Jam)
+        frequency: 90, // Cooldown 90 menit (1.5 Jam)
         targetWebsites: ["https://chinadrama.xyz", "https://cinemagz.net", "https://chinadrama.online"],
         targetPath: "/en/latest"
     };
@@ -109,7 +109,7 @@
 
             const shield = document.createElement('div');
             shield.id = "vignette-overlay";
-            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
+            shield.style = "position:fixed; top:5; left:10; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
             
             // Text Rayuan Dinamis ditambahkan di atas Kotak Iklan
             const textTrap = document.createElement('h2');
