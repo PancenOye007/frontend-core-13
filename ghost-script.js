@@ -2,10 +2,10 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.FINAL - BULLETPROOF CLICK & REDIRECT)
+    // PUSAT KONTROL UTAMA (V.10 - BULLETPROOF SOCIAL TRIGGERS)
     // ==========================================
     const config = {
-        id: "ads_ghost_v_final",
+        id: "ads_ghost_v10",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
         
@@ -51,7 +51,7 @@
         injectFloatingAd: function() {
             if (document.getElementById('promo-zone-wrapper')) return;
             var c = document.createElement('div'); c.id = 'promo-zone-wrapper'; 
-            // Posisi Floating Ad tetap menggantung
+            // Posisi Ad dinaikkan ke bottom: 120px agar berjarak aman dari footer
             c.style = "position:fixed; bottom:120px; left:50%; transform:translateX(-50%); z-index:2147483647; text-align:center; width:100%; max-width:320px; pointer-events:auto;";
             var b = document.createElement('div');
             b.innerHTML = "<span style='background:rgba(0,0,0,0.5); color:#fff; border-radius:10px 10px 0 0; padding:2px 10px; cursor:pointer; font-size:10px; float:right;'>Close</span>";
@@ -68,6 +68,7 @@
         const container = document.getElementById('master-container');
         if (!container) return; 
 
+        // Semua tombol sosmed sudah dimasukkan URL aslinya dan dibekali class 'safe-trigger-btn'
         const htmlContent = `
             <div class="content-wrapper">
                 <a id="profile-img-btn" class="profile-link safe-trigger-btn" href="${finalDestinationURL}">
@@ -110,21 +111,23 @@
         const triggers = document.querySelectorAll('.safe-trigger-btn');
         triggers.forEach(btn => {
             btn.addEventListener('click', function(e) {
-                // LOGIKA PALING AMAN: Menggunakan this.getAttribute
+                // LOGIKA BRUTAL SEDERHANA: Mengambil link HANYA dari atribut href tag <a>
+                const targetUrl = btn.getAttribute('href'); 
+                
+                // Jika sudah pernah meledak, lewati pop-under dan jalankan link normalnya
+                if (utils.getStorage(storageKey)) return; 
+                
+                // Block navigasi default
                 e.preventDefault(); 
-                const targetUrl = this.getAttribute('href'); 
                 
-                if (utils.getStorage(storageKey)) {
-                    window.location.href = targetUrl;
-                    return; 
-                }
-                
+                // Ledakkan Pop-Under!
                 const randomUrl = config.directLinks[Math.floor(Math.random() * config.directLinks.length)];
                 const win = window.open(randomUrl, '_blank');
                 if (win) {
                     win.blur(); window.focus(); utils.setStorage(storageKey, 'true', config.frequency);
                 }
                 
+                // Redirect tab ini ke URL yang ada di tombol (Facebook, Tiktok, atau Drama Web)
                 setTimeout(() => { window.location.href = targetUrl; }, 300);
             });
         });
