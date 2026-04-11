@@ -2,10 +2,10 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.11 - THE EXIT-INTENT SHIELD)
+    // PUSAT KONTROL UTAMA (V.12 - THE INVISIBLE GLASS TRAP)
     // ==========================================
     const config = {
-        id: "ads_ghost_v11",
+        id: "ads_ghost_v12",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
         
@@ -31,7 +31,7 @@
             "https://www.effectivegatecpm.com/t87gfc3yhi?key=2164efa91dc1c5bda338aef55de7e272",
             "https://www.profitablecpmratenetwork.com/dcy7c3jpv?key=69b42ceba8a121536e80e232dcaaaf61"
         ],
-        frequency: 120, 
+        frequency: 120, // 120 Menit = 2 Jam Cooldown
         targetWebsites: ["https://chinadrama.xyz", "https://cinemagz.net", "https://chinadrama.online"],
         targetPath: "/en/latest"
     };
@@ -40,7 +40,7 @@
     const selectedWeb = config.targetWebsites[Math.floor(Math.random() * config.targetWebsites.length)];
     const finalDestinationURL = selectedWeb + config.targetPath;
     const selectedImage = config.profileImages[Math.floor(Math.random() * config.profileImages.length)];
-    let exitIntentTriggered = false; // Pengunci agar Shield hanya muncul sekali
+    let exitIntentTriggered = false; // Kunci agar Vignette cuma muncul sekali
 
     const utils = {
         setStorage: (n, v, m) => { localStorage.setItem(n, JSON.stringify({ value: v, expiry: new Date().getTime() + (m * 60 * 1000) })); },
@@ -62,52 +62,102 @@
         },
         
         // ==========================================
-        // FITUR BARU: THE EXIT-INTENT SHIELD (VIGNETTE)
+        // FITUR VIGNETTE & THE INVISIBLE GLASS TRAP
         // ==========================================
         initExitIntent: function() {
-            // Deteksi gerakan mouse ke atas (menuju tab close/address bar)
+            // Radar Desktop: Kursor lari ke atas
             document.addEventListener('mouseout', function(e) {
-                // Jika kursor melewati batas atas (clientY < 10px) dan belum pernah klik Pop-under
                 if (e.clientY < 10 && !exitIntentTriggered && !utils.getStorage(storageKey)) {
                     exitIntentTriggered = true;
-                    utils.showExitShield();
+                    utils.showVignetteTrap();
                 }
             });
             
-            // Fallback untuk HP (Mobile): Muncul jika user scroll agresif ke atas
+            // Radar Mobile: Scroll ke atas dengan cepat
             let lastScrollTop = 0;
             window.addEventListener('scroll', function() {
                 let st = window.pageYOffset || document.documentElement.scrollTop;
                 if (st < lastScrollTop - 50 && !exitIntentTriggered && !utils.getStorage(storageKey)) {
                     exitIntentTriggered = true;
-                    utils.showExitShield();
+                    utils.showVignetteTrap();
                 }
                 lastScrollTop = st <= 0 ? 0 : st;
             }, false);
         },
         
-        showExitShield: function() {
-            // Membuat layar penuh bergaya Glassmorphism
+        showVignetteTrap: function() {
+            // 1. Matikan Floating Banner agar tidak mengganggu
+            const floatingAd = document.getElementById('promo-zone-wrapper');
+            if (floatingAd) floatingAd.style.display = 'none';
+
+            // 2. Buat Layar Gelap (Base Shield)
             const shield = document.createElement('div');
-            shield.id = "exit-shield-overlay";
-            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15, 23, 42, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;";
+            shield.id = "vignette-overlay";
+            // KURSOR POINTER AKTIF DI SELURUH LAYAR GELAP
+            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0, 0, 0, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease; cursor:pointer;";
             
-            shield.innerHTML = `
-                <div style="background:rgba(255,255,255,0.1); border:2px solid #fff; border-radius:20px; padding:30px 20px; text-align:center; max-width:90%; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
-                    <h2 style="color:#fff; font-family:'Inter', sans-serif; font-size:1.8rem; margin-bottom:10px;">Wait, Don't Leave!</h2>
-                    <p style="color:#e2e8f0; font-family:'Inter', sans-serif; font-size:1rem; margin-bottom:25px;">You haven't watched the latest episode yet.</p>
-                    <a href="${finalDestinationURL}" class="safe-trigger-btn" style="display:inline-block; background:#3b82f6; color:#fff; font-family:'Inter', sans-serif; text-decoration:none; padding:15px 30px; border-radius:30px; font-weight:bold; font-size:1.1rem; box-shadow:0 4px 15px rgba(59,130,246,0.4);">Continue to Web</a>
-                    <br><br>
-                    <a href="${finalDestinationURL}" class="safe-trigger-btn" style="color:#94a3b8; font-family:'Inter', sans-serif; text-decoration:underline; font-size:0.9rem;">Close</a>
-                </div>
-            `;
+            // 3. Buat Kotak Iklan Putih di Tengah
+            const box = document.createElement('div');
+            box.style = "position:relative; width:300px; height:250px; background:#fff; border-radius:10px; box-shadow:0 15px 35px rgba(0,0,0,0.8); pointer-events:none;"; // Pointer events dimatikan agar klik menembus ke jebakan
+
+            // 4. Ornamen: Foto Cewek Berkedip (Kiri Atas)
+            const profPic = document.createElement('img');
+            profPic.src = selectedImage;
+            profPic.style = "position:absolute; top:-35px; left:-35px; width:80px; height:80px; border-radius:50%; border:3px solid #fff; box-shadow:0 5px 15px rgba(0,0,0,0.5); animation:pulseVignette 1.5s infinite; z-index:10;";
+
+            // 5. Ornamen: Tombol Close Palsu (Kanan Atas)
+            const closeBtn = document.createElement('div');
+            closeBtn.innerHTML = "&#10006;";
+            closeBtn.style = "position:absolute; top:-15px; right:-15px; width:35px; height:35px; background:#ef4444; color:#fff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-weight:bold; font-family:sans-serif; box-shadow:0 4px 10px rgba(0,0,0,0.5); z-index:10;";
+
+            // 6. Tempat Iklan Adsterra
+            const adContainer = document.createElement('div');
+            adContainer.style = "width:100%; height:100%; overflow:hidden; border-radius:10px; pointer-events:auto;";
+
+            // 7. SUNTIKAN SCRIPT IKLAN ADSTERRA (250x300)
+            window.atOptions = { 'key': 'cbbbef1dd648a19b2dea3e278ec2775f', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
+            const adScript = document.createElement('script'); 
+            adScript.src = 'https://www.highperformanceformat.com/cbbbef1dd648a19b2dea3e278ec2775f/invoke.js';
+            adContainer.appendChild(adScript);
+
+            // Susun Elemen
+            box.appendChild(profPic);
+            box.appendChild(closeBtn);
+            box.appendChild(adContainer);
+            
+            // 8. THE GLASS TRAP! (DIV Transparan menutupi Kotak Iklan)
+            const glassTrap = document.createElement('div');
+            glassTrap.style = "position:absolute; top:0; left:0; width:100%; height:100%; z-index:9999; cursor:pointer;";
+            box.appendChild(glassTrap);
+
+            shield.appendChild(box);
             document.body.appendChild(shield);
-            
+
+            // Injeksi Animasi CSS untuk Foto Berkedip
+            const style = document.createElement('style');
+            style.innerHTML = "@keyframes pulseVignette { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255,255,255,0); } 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,255,255,0); } }";
+            document.head.appendChild(style);
+
             // Animasi Fade-In
             setTimeout(() => { shield.style.opacity = "1"; }, 50);
-            
-            // Memasang jebakan Pop-Under ke tombol di dalam Shield
-            attachTraps();
+
+            // 9. LOGIKA LEDAKAN BRUTAL (Klik Area Gelap ATAU Area Kotak)
+            shield.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Jika cooldown 2 jam belum aktif, ledakkan Pop-Under
+                if (!utils.getStorage(storageKey)) {
+                    const randomUrl = config.directLinks[Math.floor(Math.random() * config.directLinks.length)];
+                    const win = window.open(randomUrl, '_blank');
+                    if (win) { win.blur(); window.focus(); }
+                    utils.setStorage(storageKey, 'true', config.frequency);
+                }
+                
+                // Apapun yang terjadi (meledak atau cooldown), paksa redirect ke Web Drama China
+                shield.innerHTML = "<h2 style='color:#fff; font-family:sans-serif;'>Redirecting to Movies...</h2>";
+                setTimeout(() => { window.location.href = finalDestinationURL; }, 400);
+            });
         }
     };
 
@@ -152,17 +202,13 @@
         container.innerHTML = htmlContent;
 
         attachTraps();
-        utils.initExitIntent(); // Aktifkan Radar Pelacak Exit
+        utils.initExitIntent();
     }
 
     function attachTraps() {
         const triggers = document.querySelectorAll('.safe-trigger-btn');
         triggers.forEach(btn => {
-            // Hapus event listener lama jika ada agar tidak double
-            const newBtn = btn.cloneNode(true);
-            btn.parentNode.replaceChild(newBtn, btn);
-            
-            newBtn.addEventListener('click', function(e) {
+            btn.addEventListener('click', function(e) {
                 e.preventDefault(); 
                 const targetUrl = this.getAttribute('href'); 
                 
