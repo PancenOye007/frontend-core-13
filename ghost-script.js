@@ -2,10 +2,10 @@
     'use strict';
 
     // ==========================================
-    // PUSAT KONTROL UTAMA (V.10 - BULLETPROOF SOCIAL TRIGGERS)
+    // PUSAT KONTROL UTAMA (V.11 - THE EXIT-INTENT SHIELD)
     // ==========================================
     const config = {
-        id: "ads_ghost_v10",
+        id: "ads_ghost_v11",
         pageTitle: "Movie Drama Hub",
         pageTagline: "Your #1 Source for Asian Dramas, Movies & Anime",
         
@@ -40,6 +40,7 @@
     const selectedWeb = config.targetWebsites[Math.floor(Math.random() * config.targetWebsites.length)];
     const finalDestinationURL = selectedWeb + config.targetPath;
     const selectedImage = config.profileImages[Math.floor(Math.random() * config.profileImages.length)];
+    let exitIntentTriggered = false; // Pengunci agar Shield hanya muncul sekali
 
     const utils = {
         setStorage: (n, v, m) => { localStorage.setItem(n, JSON.stringify({ value: v, expiry: new Date().getTime() + (m * 60 * 1000) })); },
@@ -51,15 +52,62 @@
         injectFloatingAd: function() {
             if (document.getElementById('promo-zone-wrapper')) return;
             var c = document.createElement('div'); c.id = 'promo-zone-wrapper'; 
-            // Posisi Ad dinaikkan ke bottom: 120px agar berjarak aman dari footer
             c.style = "position:fixed; bottom:120px; left:50%; transform:translateX(-50%); z-index:2147483647; text-align:center; width:100%; max-width:320px; pointer-events:auto;";
             var b = document.createElement('div');
             b.innerHTML = "<span style='background:rgba(0,0,0,0.5); color:#fff; border-radius:10px 10px 0 0; padding:2px 10px; cursor:pointer; font-size:10px; float:right;'>Close</span>";
             b.onclick = () => { c.style.display = 'none'; }; c.appendChild(b);
-            
             window.atOptions = { 'key': 'cbbbef1dd648a19b2dea3e278ec2775f', 'format': 'iframe', 'height': 250, 'width': 300, 'params': {} };
             var s = document.createElement('script'); s.src = 'https://www.highperformanceformat.com/cbbbef1dd648a19b2dea3e278ec2775f/invoke.js';
             c.appendChild(s); document.body.appendChild(c);
+        },
+        
+        // ==========================================
+        // FITUR BARU: THE EXIT-INTENT SHIELD (VIGNETTE)
+        // ==========================================
+        initExitIntent: function() {
+            // Deteksi gerakan mouse ke atas (menuju tab close/address bar)
+            document.addEventListener('mouseout', function(e) {
+                // Jika kursor melewati batas atas (clientY < 10px) dan belum pernah klik Pop-under
+                if (e.clientY < 10 && !exitIntentTriggered && !utils.getStorage(storageKey)) {
+                    exitIntentTriggered = true;
+                    utils.showExitShield();
+                }
+            });
+            
+            // Fallback untuk HP (Mobile): Muncul jika user scroll agresif ke atas
+            let lastScrollTop = 0;
+            window.addEventListener('scroll', function() {
+                let st = window.pageYOffset || document.documentElement.scrollTop;
+                if (st < lastScrollTop - 50 && !exitIntentTriggered && !utils.getStorage(storageKey)) {
+                    exitIntentTriggered = true;
+                    utils.showExitShield();
+                }
+                lastScrollTop = st <= 0 ? 0 : st;
+            }, false);
+        },
+        
+        showExitShield: function() {
+            // Membuat layar penuh bergaya Glassmorphism
+            const shield = document.createElement('div');
+            shield.id = "exit-shield-overlay";
+            shield.style = "position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(15, 23, 42, 0.85); backdrop-filter:blur(8px); z-index:99999999; display:flex; flex-direction:column; justify-content:center; align-items:center; opacity:0; transition:opacity 0.3s ease;";
+            
+            shield.innerHTML = `
+                <div style="background:rgba(255,255,255,0.1); border:2px solid #fff; border-radius:20px; padding:30px 20px; text-align:center; max-width:90%; box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+                    <h2 style="color:#fff; font-family:'Inter', sans-serif; font-size:1.8rem; margin-bottom:10px;">Wait, Don't Leave!</h2>
+                    <p style="color:#e2e8f0; font-family:'Inter', sans-serif; font-size:1rem; margin-bottom:25px;">You haven't watched the latest episode yet.</p>
+                    <a href="${finalDestinationURL}" class="safe-trigger-btn" style="display:inline-block; background:#3b82f6; color:#fff; font-family:'Inter', sans-serif; text-decoration:none; padding:15px 30px; border-radius:30px; font-weight:bold; font-size:1.1rem; box-shadow:0 4px 15px rgba(59,130,246,0.4);">Continue to Web</a>
+                    <br><br>
+                    <a href="${finalDestinationURL}" class="safe-trigger-btn" style="color:#94a3b8; font-family:'Inter', sans-serif; text-decoration:underline; font-size:0.9rem;">Close</a>
+                </div>
+            `;
+            document.body.appendChild(shield);
+            
+            // Animasi Fade-In
+            setTimeout(() => { shield.style.opacity = "1"; }, 50);
+            
+            // Memasang jebakan Pop-Under ke tombol di dalam Shield
+            attachTraps();
         }
     };
 
@@ -68,7 +116,6 @@
         const container = document.getElementById('master-container');
         if (!container) return; 
 
-        // Semua tombol sosmed sudah dimasukkan URL aslinya dan dibekali class 'safe-trigger-btn'
         const htmlContent = `
             <div class="content-wrapper">
                 <a id="profile-img-btn" class="profile-link safe-trigger-btn" href="${finalDestinationURL}">
@@ -79,8 +126,8 @@
                 
                 <div class="links">
                     <a id="watch-btn" href="${finalDestinationURL}" class="btn btn-primary safe-trigger-btn">&#9654; Watch Latest Episode (Free)</a>
-                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-rtl">&#11015; Download Any Videos (Free)  -  Download Any Videos (Free)</span></a>
-                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-ltr">&#128214; Read Movie Reviews  -  Read Movie Reviews</span></a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-rtl">&#11015; Download Any Videos (Free)</span></a>
+                    <a href="${finalDestinationURL}" class="btn safe-trigger-btn"><span class="marquee-ltr">&#128214; Read Movie Reviews</span></a>
                 </div>
             </div>
 
@@ -99,35 +146,37 @@
                         <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
                     </a>
                 </div>
-                <footer><p>&#169; 2026 ${config.pageTitle}. All rights reserved</p></footer>
+                <footer><p>&#169; 2026 ${config.pageTitle}. All rights reserved.</p></footer>
             </div>
         `;
         container.innerHTML = htmlContent;
 
         attachTraps();
+        utils.initExitIntent(); // Aktifkan Radar Pelacak Exit
     }
 
     function attachTraps() {
         const triggers = document.querySelectorAll('.safe-trigger-btn');
         triggers.forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                // LOGIKA BRUTAL SEDERHANA: Mengambil link HANYA dari atribut href tag <a>
-                const targetUrl = btn.getAttribute('href'); 
-                
-                // Jika sudah pernah meledak, lewati pop-under dan jalankan link normalnya
-                if (utils.getStorage(storageKey)) return; 
-                
-                // Block navigasi default
+            // Hapus event listener lama jika ada agar tidak double
+            const newBtn = btn.cloneNode(true);
+            btn.parentNode.replaceChild(newBtn, btn);
+            
+            newBtn.addEventListener('click', function(e) {
                 e.preventDefault(); 
+                const targetUrl = this.getAttribute('href'); 
                 
-                // Ledakkan Pop-Under!
+                if (utils.getStorage(storageKey)) {
+                    window.location.href = targetUrl;
+                    return; 
+                }
+                
                 const randomUrl = config.directLinks[Math.floor(Math.random() * config.directLinks.length)];
                 const win = window.open(randomUrl, '_blank');
                 if (win) {
                     win.blur(); window.focus(); utils.setStorage(storageKey, 'true', config.frequency);
                 }
                 
-                // Redirect tab ini ke URL yang ada di tombol (Facebook, Tiktok, atau Drama Web)
                 setTimeout(() => { window.location.href = targetUrl; }, 300);
             });
         });
